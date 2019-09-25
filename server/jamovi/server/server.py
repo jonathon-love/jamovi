@@ -39,6 +39,9 @@ if tornado_major < 5:
     raise RuntimeError('tornado 5+ is required')
 
 
+from .fifer import FiferHandler
+
+
 class SingleFileHandler(RequestHandler):
 
     def initialize(self, path, is_pkg_resource=False, mime_type=None, extra_headers={}):
@@ -417,6 +420,7 @@ class Server:
             (r'/api/datasets', DatasetsList, { 'session': self._session }),
             (r'/assets/(.*)', StaticFileHandler, {
                 'path': assets_path }),
+            (r'/plugins/fifer/(.*)', FiferHandler, { }),
             (r'/[a-f0-9-]+/()', StaticFileHandler, {
                 'path': client_path,
                 'default_filename': 'index.html',

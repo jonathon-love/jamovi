@@ -44,7 +44,9 @@ const Store = Backbone.View.extend({
         for (let tab of [
             { name: 'installed', title: 'Installed' },
             { name: 'store', title: 'Available' },
-            { name: 'sideload', title: 'Sideload'} ]) {
+            { name: 'sideload', title: 'Sideload'},
+            { name: 'fifer', title: 'The Fifer'},
+        ]) {
 
             let $tab = $(util.format('<div class="jmv-store-tab" data-tab="%s"><div class="jmv-store-tab-inner">%s</div></div>', tab.name, tab.title));
             $tab.appendTo(this.$tabContainer);
@@ -59,6 +61,15 @@ const Store = Backbone.View.extend({
         this.$pageInst  = $('<div class="jmv-store-page jmv-store-page-installed left"></div>').appendTo($pageContainer);
         this.$pageStore = $('<div class="jmv-store-page jmv-store-page-store"></div>').appendTo($pageContainer);
         this.$pageSideload = $('<div class="jmv-store-page jmv-store-page-sideload right"></div>').appendTo($pageContainer);
+        this.$pageFifer = $('<div class="jmv-store-page jmv-store-page-fifer right"></div>').appendTo($pageContainer);
+
+        fetch('/plugins/fifer/')
+            .then(response => {
+                return response.text();
+            })
+            .then(text => {
+                this.$pageFifer.html(text);
+            })
 
         let settings = this.model.settings();
         let mode = settings.getSetting('mode', 'normal');
